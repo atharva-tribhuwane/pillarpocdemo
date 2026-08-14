@@ -8,17 +8,7 @@ import Loader from './components/Loader'
 import PageTransition from './components/PageTransition'
 import Layout from './components/Layout'
 import Overview from './pages/Overview'
-// import WaveGridCanvas from './components/WaveGridCanvas'
-// import Cursor from './components/Cursor'
-// import Loader from './components/Loader'
-// import PageTransition from './components/PageTransition'
-// import Layout from './components/Layout'
-// import Overview from './pages/Overview'
-// import Tier1Board from './pages/Tier1Board'
-// import Tier2Csuite from './pages/Tier2Csuite'
-// import Tier3Vp from './pages/Tier3Vp'
-// import Tier4SeniorIc from './pages/Tier4SeniorIc'
-// import Contact from './pages/Contact'
+import Tier1Board from './pages/Tier1Board'
 
 function App() {
   const location = useLocation()
@@ -97,6 +87,7 @@ function App() {
       <Layout> 
         <Routes>
           <Route path="/" element={<Overview />} />
+          <Route path="/tier-1-board" element={<Tier1Board />} />
         </Routes>
       </Layout>
     </>

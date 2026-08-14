@@ -2,9 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pillardemomontfort</title>
+    <meta name="color-scheme" content="dark light" />
+    <script>
+      try {
+        var t = localStorage.getItem('pillar-theme')
+        if (t !== 'light' && t !== 'dark') t = 'light'
+        document.documentElement.dataset.theme = t
+      } catch (e) {
+        document.documentElement.dataset.theme = 'light'
+      }
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="description" content="PILLAR — a closed, invite-only intelligence network for senior technology leaders, structured in four tiers." />
+    <meta property="og:title" content="PILLAR — A Closed Intelligence Network" />
+    <meta property="og:description" content="A closed intelligence network for senior technology leaders." />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <title>PILLAR — A Closed Intelligence Network</title>
   </head>
   <body>
     <div id="root"></div>
