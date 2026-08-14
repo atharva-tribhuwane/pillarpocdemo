@@ -9,6 +9,7 @@ import PageTransition from './components/PageTransition'
 import Layout from './components/Layout'
 import Overview from './pages/Overview'
 import Tier1Board from './pages/Tier1Board'
+import Tier2CSuite from './pages/Tier2CSuite'
 
 function App() {
   const location = useLocation()
@@ -88,6 +89,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Overview />} />
           <Route path="/tier-1-board" element={<Tier1Board />} />
+          <Route path="/tier-2-csuite" element={<Tier2CSuite />} />
         </Routes>
       </Layout>
     </>
