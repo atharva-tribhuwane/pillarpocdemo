@@ -108,7 +108,7 @@ export default function TierAccordion({
               rowRefs.current[i] = el
             }}
             className="border-t"
-            style={{ borderColor: 'var(--hairline)' }}
+            style={{ borderColor: 'var(--hairline)', padding:'2%' }}
           >
             <button
               type="button"
