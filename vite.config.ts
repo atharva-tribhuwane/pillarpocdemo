@@ -4,9 +4,12 @@ import { defineConfig } from "vite"
 import { inspectAttr } from 'plugin-inspect-react-code'
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: './',
-  plugins: [inspectAttr(), react()],
+export default defineConfig(({ command }) => ({
+  base: '/',
+  plugins: [
+    ...(command === 'serve' ? [inspectAttr()] : []),
+    react(),
+  ],
   server: {
     port: 5173,
   },
@@ -15,4 +18,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-});
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router'],
+          motion: ['gsap', 'framer-motion', 'lenis'],
+        },
+      },
+    },
+  },
+}))
