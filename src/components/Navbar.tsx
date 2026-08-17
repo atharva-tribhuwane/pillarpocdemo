@@ -13,8 +13,8 @@ const NAV_LINKS = [
   { label: 'Contact', to: '/contact' },
 ]
 
-/** Total fixed nav height (top bar + secondary bar) — Layout mirrors this. */
-export const NAV_HEIGHT = 120
+/** Re-exported from lib/layout so existing `from './Navbar'` imports keep working. */
+export { NAV_HEIGHT } from '../lib/layout'
 
 /** Full-form brand tagline (reference: wordmark on top, tagline beneath). */
 export const BRAND_TAGLINE =

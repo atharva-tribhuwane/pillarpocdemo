@@ -146,8 +146,10 @@ export default function RegisterSection() {
         <Reveal mode="block" className="mt-12 max-w-3xl" delay={0.05}>
           {submitted ? (
             <div
+              id="register-form"
               ref={successRef}
               className="panel p-10 text-center md:p-14"
+              style={{ scrollMarginTop: NAV_HEIGHT + 24 }}
               role="status"
             >
               <span
@@ -164,7 +166,12 @@ export default function RegisterSection() {
               </p>
             </div>
           ) : (
-            <form className="panel p-8 md:p-12" onSubmit={onSubmit}>
+            <form
+              id="register-form"
+              className="panel p-8 md:p-12"
+              style={{ scrollMarginTop: NAV_HEIGHT + 24 }}
+              onSubmit={onSubmit}
+            >
               <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
                 <Field label="First name">
                   <input

@@ -2,9 +2,23 @@ import { useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { animate } from 'framer-motion'
 import { scrollToTarget } from '../lib/lenis'
+import { scrollToRegister, takeRegisterIntent } from '../lib/register'
 import { SIGNATURE_CUBIC } from '../lib/gsap'
 
 const HALF = 0.31 // ~620ms total per design.md System 5
+
+/**
+ * Reposition the incoming page while the overlay covers it: normally the top,
+ * but a "Request Access" CTA from another page hands off the register form as
+ * the landing spot, so the wipe lifts on the form instead of jumping later.
+ */
+function settleIncomingScroll() {
+  if (takeRegisterIntent()) {
+    scrollToRegister({ immediate: true })
+    return
+  }
+  scrollToTarget(0, { immediate: true })
+}
 
 export default function PageTransition() {
   const overlayRef = useRef<HTMLDivElement>(null)
@@ -34,7 +48,7 @@ export default function PageTransition() {
       { duration: HALF, ease: SIGNATURE_CUBIC },
     )
     controls.then(() => {
-      scrollToTarget(0, { immediate: true })
+      settleIncomingScroll()
       overlay.style.transformOrigin = 'top'
       return animate(
         overlay,
@@ -74,7 +88,7 @@ export default function PageTransition() {
       overlay.style.transformOrigin = 'bottom'
       animate(overlay, { scaleY: [0, 1] }, { duration: HALF, ease: SIGNATURE_CUBIC }).then(() => {
         navigate(url.pathname + url.search)
-        scrollToTarget(0, { immediate: true })
+        settleIncomingScroll()
         overlay.style.transformOrigin = 'top'
         return animate(
           overlay,
