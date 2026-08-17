@@ -9,26 +9,30 @@ import { gsap, prefersReducedMotion } from '../lib/gsap'
 import Reveal from './Reveal'
 import { NAV_HEIGHT } from './Navbar'
 import { accentRGB } from '../lib/theme'
+import { TIERS, submitRegistration } from '../lib/gform'
 
 type Mode = 'individual' | 'corporate'
 
-const TIER_OPTIONS = [
-  'T1 · Board',
-  'T2 · C-Suite',
-  'T3 · VP / Founder / Director',
-  'T4 · Senior IC',
-]
+type Status = 'idle' | 'submitting' | 'error'
 
 function Field({
   label,
+  optional,
   children,
 }: {
   label: string
+  /** Every field but one is required, so we mark the exception instead. */
+  optional?: boolean
   children: ReactNode
 }) {
   return (
     <label className="block">
-      <span className="eyebrow mb-1 block">{label}</span>
+      <span className="eyebrow mb-1 block">
+        {label}
+        {optional && (
+          <span style={{ color: 'var(--text-muted)' }}> (optional)</span>
+        )}
+      </span>
       {children}
     </label>
   )
@@ -42,11 +46,33 @@ function Field({
 export default function RegisterSection() {
   const [mode, setMode] = useState<Mode>('individual')
   const [submitted, setSubmitted] = useState(false)
+  const [status, setStatus] = useState<Status>('idle')
   const successRef = useRef<HTMLDivElement>(null)
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setSubmitted(true)
+
+    const data = new FormData(e.currentTarget)
+    const text = (name: string) => String(data.get(name) ?? '').trim()
+
+    setStatus('submitting')
+
+    try {
+      await submitRegistration({
+        requestType: mode === 'corporate' ? 'Corporate' : 'Individual',
+        firstName: text('first-name'),
+        lastName: text('last-name'),
+        email: text('email'),
+        title: text('title'),
+        company: text('company'),
+        tier: text('tier'),
+        invitedBy: text('invited-by'),
+      })
+      setSubmitted(true)
+    } catch {
+      // Only reachable when the browser never got the request out.
+      setStatus('error')
+    }
   }
 
   /* subtle confirmation animation (skipped under reduced motion) */
@@ -177,12 +203,13 @@ export default function RegisterSection() {
                   <input
                     type="text"
                     name="first-name"
+                    required
                     autoComplete="given-name"
                     placeholder="James"
                     className="register-input"
                   />
                 </Field>
-                <Field label="Last name">
+                <Field label="Last name" optional>
                   <input
                     type="text"
                     name="last-name"
@@ -195,6 +222,7 @@ export default function RegisterSection() {
                   <input
                     type="email"
                     name="email"
+                    required
                     autoComplete="email"
                     placeholder="james@company.com"
                     className="register-input"
@@ -204,6 +232,7 @@ export default function RegisterSection() {
                   <input
                     type="text"
                     name="title"
+                    required
                     autoComplete="organization-title"
                     placeholder="CTO"
                     className="register-input"
@@ -213,6 +242,7 @@ export default function RegisterSection() {
                   <input
                     type="text"
                     name="company"
+                    required
                     autoComplete="organization"
                     placeholder="Acme Corp"
                     className="register-input"
@@ -229,9 +259,9 @@ export default function RegisterSection() {
                       <option value="" disabled>
                         Select your tier
                       </option>
-                      {TIER_OPTIONS.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
+                      {TIERS.map((t) => (
+                        <option key={t.value} value={t.label}>
+                          {t.label}
                         </option>
                       ))}
                     </select>
@@ -248,22 +278,39 @@ export default function RegisterSection() {
                   <input
                     type="text"
                     name="invited-by"
+                    required
                     placeholder="Name of person who invited you"
                     className="register-input"
                   />
                 </Field>
               </div>
 
+              {status === 'error' && (
+                <p
+                  role="alert"
+                  className="body-copy mt-10 p-4"
+                  style={{
+                    background: 'var(--accent-wash)',
+                    border: '1px solid var(--hairline-gold)',
+                  }}
+                >
+                  We could not reach the registrar. Check your connection and
+                  submit again.
+                </p>
+              )}
+
               <button
                 type="submit"
                 data-cursor="hover"
-                className="mt-12 inline-block w-full px-8 py-4 text-[12px] font-normal uppercase tracking-[0.22em] transition-all duration-300 hover:scale-[1.02] md:w-auto"
+                disabled={status === 'submitting'}
+                className="mt-12 inline-block w-full px-8 py-4 text-[12px] font-normal uppercase tracking-[0.22em] transition-all duration-300 enabled:hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
                 style={{
                   background: 'var(--accent-brand)',
                   color: 'var(--bg)',
                   borderRadius: 'var(--btn-radius)',
                 }}
                 onMouseEnter={(e) => {
+                  if (status === 'submitting') return
                   e.currentTarget.style.background = 'var(--accent-bright)'
                   e.currentTarget.style.boxShadow = `0 0 24px rgba(${accentRGB()},0.35)`
                 }}
@@ -272,7 +319,9 @@ export default function RegisterSection() {
                   e.currentTarget.style.boxShadow = 'none'
                 }}
               >
-                Submit registration request
+                {status === 'submitting'
+                  ? 'Submitting…'
+                  : 'Submit registration request'}
               </button>
               <p
                 className="mt-5 text-[12px] font-light"
