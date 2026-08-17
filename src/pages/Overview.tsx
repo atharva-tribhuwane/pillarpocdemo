@@ -737,7 +737,7 @@ function LoopSection() {
         data-loop-link
         data-cursor="hover"
         onClick={() => scrollToTarget('#tier-chapter', { duration: 2 })}
-        className="text-[12px] font-normal uppercase tracking-[0.22em] transition-all duration-[400ms] hover:tracking-[0.26em] hover:text-[var(--accent-bright)]"
+        className="text-[12px] font-normal uppercase tracking-[0.22em] transition-all duration-[200ms] hover:tracking-[0.26em] hover:text-[var(--accent-bright)]"
         style={{ color: 'var(--text)' }}
       >
         <span className="loop-glyph mr-2">↻</span> Back to Board

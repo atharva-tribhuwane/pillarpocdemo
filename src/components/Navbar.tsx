@@ -71,7 +71,7 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50">
       {/* Top bar */}
       <div
-        className="flex items-center justify-between px-6 transition-all duration-[400ms] md:px-10"
+        className="flex items-center justify-between px-6 transition-all duration-[200ms] md:px-10"
         style={{
           height: scrolled ? 64 : 76,
           background: scrolled ? 'var(--nav-bg)' : 'transparent',

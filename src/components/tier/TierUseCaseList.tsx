@@ -5,7 +5,7 @@ export default function TierUseCaseList({ items }: { items: string[] }) {
       {items.map((item) => (
         <li
           key={item}
-          className="group border-b py-3.5 transition-transform duration-[400ms] hover:translate-x-2"
+          className="group border-b py-3.5 transition-transform duration-[200ms] hover:translate-x-2"
           style={{
             borderColor: 'var(--hairline)',
             transitionTimingFunction: 'cubic-bezier(0.9,0,0.4,1)',

@@ -10,6 +10,9 @@ import Layout from './components/Layout'
 import Overview from './pages/Overview'
 import Tier1Board from './pages/Tier1Board'
 import Tier2CSuite from './pages/Tier2CSuite'
+import Tier3Vp from './pages/Tier3vp'
+import Tier4SeniorIc from './pages/Tier4SeniorIc'
+import Contact from './pages/Contact'
 
 function App() {
   const location = useLocation()
@@ -82,7 +85,7 @@ function App() {
   return (
     <>
      <WaveGridCanvas />
-      {/* <Cursor /> */}
+      <Cursor />
       <Loader />
       <PageTransition />
       <Layout> 
@@ -90,6 +93,10 @@ function App() {
           <Route path="/" element={<Overview />} />
           <Route path="/tier-1-board" element={<Tier1Board />} />
           <Route path="/tier-2-csuite" element={<Tier2CSuite />} />
+          <Route path="/tier-3-vp" element={<Tier3Vp />} />
+          <Route path="/tier-4-senior-ic" element={<Tier4SeniorIc />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<Overview />} />
         </Routes>
       </Layout>
     </>
