@@ -2,11 +2,6 @@ import { useEffect } from 'react'
 import TierPage from '../components/tier/TierPage'
 import { setWaveSceneOverride, TIER_CONFIGS } from '../lib/wave'
 
-/**
- * T2 — C-Suite (`/tier-2-csuite`). One notch busier than T1: medium grid,
- * focal point high in the frame like a rising light. Sets the shared wave
- * config on mount, restores on unmount.
- */
 export default function Tier2Csuite() {
   useEffect(() => {
     setWaveSceneOverride(TIER_CONFIGS[1])
